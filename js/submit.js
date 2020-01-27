@@ -1,4 +1,4 @@
-const form = $("form");
+const form = document.querySelector("form");
 const messageConfirmed = `<div>Message Sent</div> `;
 const displayAlert = alert => {
   form.append(alert);
@@ -46,24 +46,44 @@ function xmlToJson(xml) {
 $(function() {
   form.on("submit", function(e) {
     e.preventDefault();
+    const formattedFormData = new FormData(form);
+    fetchData(formattedFormData);
+    const name = form.find("[name='name']").val();
+    const email = form.find("[name='email']").val();
+    const message = form.find("[name='message']").val();
 
+    const data = { name, email, message };
+
+    console.log(data);
     fetch(
       "http://localhost/home/newname.php",
-      { form },
+
       {
         method: "POST",
-        data: form
-      }
+        body: data
+      },
+      data
     )
       .then(res => {
-        displayAlert(messageConfirmed);
-        var jsonText = JSON.stringify(xmlToJson(res.body));
-        console.log(jsonText);
-
-        return res.json();
+        return res;
       })
-      .then(myJson => {
-        console.log(myJson);
+      .then(body => {
+        console.log(body);
+      })
+      .catch(err => {
+        console.log(err);
       });
   });
 });
+async function postData(formattedFormData) {
+  /**
+   * The request is still 'POST' but the $_GET variable
+   * will get values too: 'name' and 'favorite_color'
+   */
+  const response = await fetch("http://localhost/home/newname.php", {
+    method: "POST",
+    body: formattedFormData
+  });
+  const data = await response.text();
+  console.log(data);
+}

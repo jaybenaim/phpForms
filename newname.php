@@ -1,10 +1,48 @@
+<?php
+// http://www.example.org/ajax.php
+if (!isset($_SERVER['HTTP_ORIGIN'])) {
+    // This is not cross-domain request
+    exit;
+}
 
-<?php echo $_POST["name"];  ?> <br /> 
-<?php echo $_POST["email"]; ?> <br /> 
-<?php 
+    $wildcard = FALSE; // Set $wildcard to TRUE if you do not plan to check or limit the domains
+    $credentials = FALSE; // Set $credentials to TRUE if expects credential requests (Cookies, Authentication, SSL certificates)
+    $allowedOrigins = array('http://localhost:5500', 'http://127.0.0.1:5500');
+    if (!in_array($_SERVER['HTTP_ORIGIN'], $allowedOrigins) && !$wildcard) {
+        // Origin is not allowed
+        exit;
+    }
+    $origin = $wildcard && !$credentials ? '*' : $_SERVER['HTTP_ORIGIN'];
 
-$email = $_POST["email"]; 
-$msg =  wordwrap($_POST["message"], 70);
+    header("Access-Control-Allow-Origin: " . $origin);
+    if ($credentials) {
+        header("Access-Control-Allow-Credentials: true");
+    }
+    header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+    header("Access-Control-Allow-Headers: Origin");
+    header('P3P: CP="CAO PSA OUR"'); // Makes IE to support cookies
 
-echo "{$msg} from {$email}";  
- ?> 
+    // Handling the Preflight
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+        exit;
+    }
+    $list = [
+        "name" => "testname",
+        "email" => "testemail"
+    ];
+    // Response
+    
+    header("Content-Type: application/json; charset=utf-8");
+    echo json_encode(array('status' => 'OK', 'body' => $_POST ));
+    ?>
+
+
+<?php
+//    foreach ($_POST as $value) {
+//
+//        echo $value;
+//    }
+//
+//    unset($value);
+    
+?>
