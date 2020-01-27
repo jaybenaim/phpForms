@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form>
+      Name: <input type="text" name="name" /><br />
+      E-mail: <input type="text" name="email" /><br />
+      Message: <input type="textbox" name="message" />
+      <input type="submit" />
+    </form>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+
+    <script>
+      const form = $("form");
+      const messageConfirmed = `<div>Message Sent</div> `;
+      const displayAlert = alert => {
+        form.append(alert);
+      };
+      $(function() {
+        form.on("submit", function(e) {
+          e.preventDefault();
+
+          $.ajax({
+            type: "POST",
+            url: "http://localhost/home/newname.php",
+            data: form.serialize(),
+            success: displayAlert(messageConfirmed)
+          }).then(res => {
+            console.log(res);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
