@@ -14,27 +14,6 @@
       <input type="submit" />
     </form>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-
-    <script>
-      const form = $("form");
-      const messageConfirmed = `<div>Message Sent</div> `;
-      const displayAlert = alert => {
-        form.append(alert);
-      };
-      $(function() {
-        form.on("submit", function(e) {
-          e.preventDefault();
-
-          $.ajax({
-            type: "POST",
-            url: "http://localhost/home/newname.php",
-            data: form.serialize(),
-            success: displayAlert(messageConfirmed)
-          }).then(res => {
-            console.log(res);
-          });
-        });
-      });
-    </script>
+    <script src="js/submit.js" type="module"></script>
   </body>
 </html>
