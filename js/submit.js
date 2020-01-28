@@ -2,7 +2,6 @@ const form = document.querySelector("form");
 const displayAlert = data => {
   const { name, email, message } = data.body;
   const messageConfirmed = `<div> <br /> Message sent to ${email}.<br />  </div> <br /> <div>Message: <p> ${message} <br />  from ${name}.</p> </div> `;
-  console.log(data);
   $("form").append(messageConfirmed);
 };
 
@@ -22,6 +21,4 @@ async function postData(formattedFormData) {
 
   const json = JSON.parse(data);
   displayAlert(json);
-
-  console.log(json);
 }
