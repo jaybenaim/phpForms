@@ -26,10 +26,7 @@ if (!isset($_SERVER['HTTP_ORIGIN'])) {
     if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
         exit;
     }
-    $list = [
-        "name" => "testname",
-        "email" => "testemail"
-    ];
+  
     // Response
     
     header("Content-Type: application/json; charset=utf-8");

@@ -1,33 +1,16 @@
 const form = document.querySelector("form");
-const messageConfirmed = `<div>Message Sent</div> `;
-const displayAlert = alert => {
-  form.append(alert);
+const displayAlert = data => {
+  const { name, email, message } = data.body;
+  const messageConfirmed = `<div> <br /> Message sent to ${email}.<br />  </div> <br /> <div>Message: <p> ${message} <br />  from ${name}.</p> </div> `;
+  console.log(data);
+  $("form").append(messageConfirmed);
 };
 
 $(function() {
-  form.on("submit", function(e) {
+  form.addEventListener("submit", function(e) {
     e.preventDefault();
     const formattedFormData = new FormData(form);
-    fetchData(formattedFormData);
-
-    fetch(
-      "http://localhost/home/newname.php",
-
-      {
-        method: "POST",
-        body: data
-      },
-      data
-    )
-      .then(res => {
-        return res;
-      })
-      .then(body => {
-        console.log(body);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    postData(formattedFormData);
   });
 });
 async function postData(formattedFormData) {
@@ -36,5 +19,9 @@ async function postData(formattedFormData) {
     body: formattedFormData
   });
   const data = await response.text();
-  console.log(data);
+
+  const json = JSON.parse(data);
+  displayAlert(json);
+
+  console.log(json);
 }
